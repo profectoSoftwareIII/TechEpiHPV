@@ -12,9 +12,9 @@ class UsuarioModel(Base):
     apellido = Column(String)
     cedula = Column(String)
     edad = Column(String)
+    telefono = Column(String)
     email = Column(String)
     password = Column(String)
-    telefono = Column(String)
 
     # foraneo para otras tablas
     paciente = relationship("pacienteModel", back_populates="usuario")
@@ -30,6 +30,7 @@ class PacienteModel(Base):
     usuario_id = Column(Integer, ForeignKey("usuario.id"))
 
     # foraneo para otras tablas
+    recordatorio = relationship("RecordatorioModel", back_populates="paciente")
 
     # Recibo de foraneo de otras tablas
     usuario = relationship("UsuarioModel", back_populates="paciente")
@@ -64,6 +65,7 @@ class RecordatorioModel(Base):
     __tablename__ = "recordatorio"
     id = Column(Integer, primary_key=True)
     medico_id = Column(Integer, ForeignKey("medico.id"))
+    paciente_id = Column(Integer, ForeignKey("paciente.id"))
     tipo_recordatorio = Column(String)
     descripcion = Column(String)
     fecha = Column(DateTime)
@@ -71,7 +73,8 @@ class RecordatorioModel(Base):
     # foraneo para otras tablas
 
     # Recibo de foraneo de otras tablas
-    medico = relationship("medicoModel", back_populates="recordatorio")
+    medico = relationship("MedicoModel", back_populates="recordatorio")
+    paciente = relationship("PacienteModel", back_populates="recordatorio")
 
 
 class HistorialDiagnosticoModel(Base):
@@ -79,9 +82,16 @@ class HistorialDiagnosticoModel(Base):
     id = Column(Integer, primary_key=True)
     paciente_id = Column(Integer, ForeignKey("paciente.id"))
     medico_id = Column(Integer, ForeignKey("medico.id"))
+    fecha = Column(DateTime)
 
     # foraneo para otras tablas
 
     # Recibo de foraneo de otras tablas
     medico = relationship("MedicoModel", back_populates="historialDiagnostico")
     paciente = relationship("PacienteModel", back_populates="historialDiagnostico")
+
+
+class notificacionesModel:
+    destino: str
+    asunto: str
+    mensaje: str
