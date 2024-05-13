@@ -1,0 +1,11 @@
+numpy
+fastapi[all]
+uvicorn
+pydantic
+PyJWT
+cryptography
+SQLAlchemy
+reportlab
+requests
+psycopg2
+gunicorn
