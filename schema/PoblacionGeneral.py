@@ -2,8 +2,9 @@ from pydantic import BaseModel
 
 
 class PoblacionGeneralBase(BaseModel):
-    id: int
     usuario_id: int
+    ocupacion: str
+    ubicacion: str
 
 
 class PoblacionGeneralSchema(PoblacionGeneralBase):

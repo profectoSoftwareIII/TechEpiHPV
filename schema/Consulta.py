@@ -2,15 +2,15 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class RecordatorioBase(BaseModel):
-    medico_id: int
+class ConsultaBase(BaseModel):
     paciente_id: int
-    tipo_recordatorio: str
+    medico_id: int
+    nombre_diagnostico: str
     descripcion: str
     fecha: datetime
 
 
-class RecordatorioSchema(RecordatorioBase):
+class ConsultaSchema(ConsultaBase):
     id: int
 
     class Config:

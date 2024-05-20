@@ -2,8 +2,8 @@ from pydantic import BaseModel
 
 
 class PacienteBase(BaseModel):
-    id: int
-    usuario_id = str
+    usuario_id: str
+    tipo_hpv: str
 
 
 class PacienteSchema(PacienteBase):

@@ -6,10 +6,10 @@ def DataBaseConnection():
     conn = None
     try:
         conn = psycopg2.connect(
-            host="HOST",
-            database="DATABASE",
-            user="USER",
-            password="PASS")
+            host="127.0.0.1",
+            database="hpv_safe",
+            user="root",
+            password="123456789")
 
         return conn
     except psycopg2.OperationalError as err:
