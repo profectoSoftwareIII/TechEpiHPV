@@ -73,7 +73,7 @@ class RecordatorioModel(Base):
     paciente_id = Column(Integer, ForeignKey("paciente.id"))
     tipo_recordatorio = Column(String)
     descripcion = Column(String)
-    fecha_inicio = Column(DateTime)
+    fecha = Column(DateTime)
 
     # foraneo para otras tablas
 

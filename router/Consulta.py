@@ -6,6 +6,7 @@ from utils.dbAlchemy import session
 from models.models import ConsultaModel, PacienteModel, MedicoModel
 from schema.Consulta import ConsultaSchema, ConsultaBase
 from typing import List
+import datetime
 
 consulta = APIRouter()
 
@@ -20,12 +21,16 @@ async def get_consultas():
 
 @consulta.post(path="/registrarConsulta/", response_model=ConsultaSchema)
 async def registrar_consulta(consulta: ConsultaBase):
-    print(consulta)
     db_consulta = ConsultaModel(**consulta.dict())
-    session.add(db_consulta)
-    session.commit()
-    session.refresh(db_consulta)
-    return db_consulta
+    fecha_actual = datetime.datetime.now()
+    fecha_consulta = db_consulta.fecha.date()
+    if fecha_actual.date() == fecha_consulta:
+        if 1 < len(db_consulta.descripcion) <= 200:
+            session.add(db_consulta)
+            session.commit()
+            session.refresh(db_consulta)
+            print("REGISTRADO:", db_consulta)
+            return db_consulta
 
 
 @consulta.get(path="/consultaPaciente/")
