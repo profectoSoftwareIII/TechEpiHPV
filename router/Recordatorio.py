@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 from fastapi import APIRouter, HTTPException
 from utils.dbAlchemy import session
-from models.models import RecordatorioModel, PacienteModel, UsuarioModel, notificacionesModel
+from models.models import RecordatorioModel, PacienteModel, UsuarioModel, notificacionesModel, ConsultaModel
 from schema.Recordatorio import RecordatorioSchema, RecordatorioBase
 from services import notificaciones
 from typing import List
@@ -26,19 +26,19 @@ async def resgistrar_recordatorio(recordatorio: RecordatorioBase):
     session.add(db_consulta)
     session.commit()
     session.refresh(db_consulta)
-    item = (session.query(RecordatorioModel, PacienteModel, UsuarioModel).
-            join(RecordatorioModel, RecordatorioModel.paciente_id == PacienteModel.id).first())
+    paciente = session.query(PacienteModel).filter(PacienteModel.id == db_consulta.paciente_id).first()
+    usuario = session.query(UsuarioModel).filter(UsuarioModel.id == paciente.usuario_id).first()
+    consulta = session.query(ConsultaModel).filter(ConsultaModel.paciente_id == paciente.id).first()
 
-    if item[0].tipo_recordatorio == "email":
-        notificacionesModel.destino = item[2].email
+    if db_consulta.tipo_recordatorio == "email":
+        notificacionesModel.destino = usuario.email
         notificacionesModel.asunto = 'RECORDATORIO DINAMICO'
-        notificacionesModel.mensaje = item[0].descripcion
-        notificacion = notificaciones.enviarCorreo(notificacionesModel)
+        notificacionesModel.mensaje = consulta.descripcion
 
-    elif item[0].tipo_recordatorio == "telefono":
-        notificacionesModel.destino = item[2].telefono
+    elif db_consulta.tipo_recordatorio == "telefono":
+        notificacionesModel.destino = usuario.telefono
         notificacionesModel.asunto = 'RECORDATORIO DINAMICO'
-        notificacionesModel.mensaje  = item[0].descripcion
-        notificacion = notificaciones.enviarSMS(notificacionesModel)
+        notificacionesModel.mensaje  = consulta.descripcion
+
 
     return db_consulta
