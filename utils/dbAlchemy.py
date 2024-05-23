@@ -12,6 +12,7 @@ DB_URL = f"mysql+pymysql://{username}:{password}@localhost/{database}"
 # Intentar conectar a la base de datos
 try:
     engine = create_engine(DB_URL)
+    # engine = create_engine("mysql://root:123456789@127.0.0.1/hpv_safe")
     Session = sessionmaker(bind=engine)
     session = Session()
     Base = declarative_base()
