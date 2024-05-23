@@ -1,10 +1,11 @@
 import sys
+
 sys.path.append("..")
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from schema.Usuario import UsuarioSchema
 from utils.dbAlchemy import session
 from models.models import UsuarioModel
-from schema.Usuario import UsuarioSchema, UsuarioBase
+from schema.Usuario import UsuarioSchema
 from typing import List
 
 user = APIRouter()

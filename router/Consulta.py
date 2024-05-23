@@ -2,7 +2,7 @@ import sys
 
 sys.path.append("..")
 from sqlalchemy.exc import SQLAlchemyError
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from utils.dbAlchemy import session
 from models.models import (
     ConsultaModel,
@@ -57,42 +57,57 @@ async def registrar_consulta(consulta: ConsultaBase):
                 print("Error al registrar la consulta:", e)
 
 
-@consulta.get(path="/consultaPaciente/")
+from sqlalchemy.exc import SQLAlchemyError
+
+
+@consulta.get(path="/consultaPaciente/{id}")
 async def historial_paciente(id: int):
-    consultas = (
-        session.query(ConsultaModel).filter(ConsultaModel.paciente_id == id).all()
-    )
-    paciente = (
-        session.query(PacienteModel)
-        .filter(PacienteModel.id == consultas[0].paciente_id)
-        .first()
-    )
-    medico = (
-        session.query(MedicoModel)
-        .filter(MedicoModel.id == consultas[0].medico_id)
-        .first()
-    )
-    usuarioMedico = (
-        session.query(UsuarioModel).filter(UsuarioModel.id == medico.usuario_id).first()
-    )
-    usuarioPaciente = (
-        session.query(UsuarioModel)
-        .filter(UsuarioModel.id == paciente.usuario_id)
-        .first()
-    )
+    try:
+        consultas = (
+            session.query(ConsultaModel).filter(ConsultaModel.paciente_id == id).all()
+        )
+        if not consultas:
+            return {
+                "error": "No se encontraron consultas para el paciente con id "
+                + str(id)
+            }
 
-    resultado_json = []
-    for item in consultas:
-        consulta_dict = {
-            "medico": usuarioMedico.nombre,
-            "tarjetaProfesional": medico.tarjeta_profesional,
-            "especialidad": medico.especialidad,
-            "paciente": usuarioPaciente.nombre,
-            "cedula": usuarioPaciente.cedula,
-            "nombre_diagnostico": item.nombre_diagnostico,
-            "descripcion": item.descripcion,
-            "fecha": item.fecha,
-        }
+        paciente = (
+            session.query(PacienteModel)
+            .filter(PacienteModel.id == consultas[0].paciente_id)
+            .first()
+        )
+        medico = (
+            session.query(MedicoModel)
+            .filter(MedicoModel.id == consultas[0].medico_id)
+            .first()
+        )
+        usuarioMedico = (
+            session.query(UsuarioModel)
+            .filter(UsuarioModel.id == medico.usuario_id)
+            .first()
+        )
+        usuarioPaciente = (
+            session.query(UsuarioModel)
+            .filter(UsuarioModel.id == paciente.usuario_id)
+            .first()
+        )
 
-        resultado_json.append(consulta_dict)
-    return resultado_json
+        resultado_json = []
+        for item in consultas:
+            consulta_dict = {
+                "medico": usuarioMedico.nombre,
+                "tarjetaProfesional": medico.tarjeta_profesional,
+                "especialidad": medico.especialidad,
+                "paciente": usuarioPaciente.nombre,
+                "cedula": usuarioPaciente.cedula,
+                "nombre_diagnostico": item.nombre_diagnostico,
+                "descripcion": item.descripcion,
+                "fecha": item.fecha,
+            }
+
+            resultado_json.append(consulta_dict)
+        return resultado_json
+    except SQLAlchemyError as e:
+        print("Error al realizar la consulta a la base de datos:", e)
+        return {"error": "Error al realizar la consulta a la base de datos"}
