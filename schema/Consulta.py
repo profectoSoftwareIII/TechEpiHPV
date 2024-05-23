@@ -19,9 +19,8 @@ class ConsultaSchema(ConsultaBase):
 
 
 class TratamientoBase(BaseModel):
-    nombre_tratamiento: str
+    nombre: str
     descripcion: str
-    fecha: datetime
 
 
 class ConsultaTratamientoSchema(TratamientoBase):

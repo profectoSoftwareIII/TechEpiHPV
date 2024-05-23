@@ -1,3 +1,4 @@
+import datetime
 from sqlalchemy import (
     Table,
     Column,
@@ -112,9 +113,10 @@ class ConsultaModel(Base):
 class TratamientoModel(Base):
     __tablename__ = "tratamiento"
     id = Column(Integer, primary_key=True)
-    nombre_tratamiento = Column(String)
+    nombre = Column(String)
     descripcion = Column(String)
-    fecha = Column(DateTime)
+    fecha = Column(DateTime, default=datetime.datetime.now())
+    consulta = relationship("ConsultaModel", back_populates="tratamiento")
 
 
 class notificacionesModel:

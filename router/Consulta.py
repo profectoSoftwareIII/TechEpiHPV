@@ -1,20 +1,20 @@
 import sys
 
 sys.path.append("..")
+from sqlalchemy.exc import SQLAlchemyError
 from fastapi import APIRouter, HTTPException
 from utils.dbAlchemy import session
 from models.models import (
     ConsultaModel,
     PacienteModel,
     MedicoModel,
-    Tratamiento,
+    TratamientoModel,
     UsuarioModel,
 )
 from schema.Consulta import (
     ConsultaSchema,
     ConsultaBase,
     TratamientoBase,
-    TratamientoSchema,
 )
 from typing import List
 import datetime
@@ -30,9 +30,9 @@ async def get_consultas():
     return consultas
 
 
-@consulta.pos("/tratamiento", response_model=TratamientoBase)
+@consulta.post("/tratamiento", response_model=TratamientoBase)
 async def create_tratamiento(tratamiento: TratamientoBase):
-    db_tratamiento = Tratamiento(**tratamiento.dict())
+    db_tratamiento = TratamientoModel(**tratamiento.model_dump())
     session.add(db_tratamiento)
     session.commit()
     session.refresh(db_tratamiento)
@@ -46,11 +46,15 @@ async def registrar_consulta(consulta: ConsultaBase):
     fecha_consulta = db_consulta.fecha.date()
     if fecha_actual.date() == fecha_consulta:
         if 1 < len(db_consulta.descripcion) <= 200:
-            session.add(db_consulta)
-            session.commit()
-            session.refresh(db_consulta)
-            print("REGISTRADO:", db_consulta)
-            return db_consulta
+            try:
+                session.add(db_consulta)
+                session.commit()
+                session.refresh(db_consulta)
+                print("REGISTRADO:", db_consulta)
+                return db_consulta
+            except SQLAlchemyError as e:
+                session.rollback()
+                print("Error al registrar la consulta:", e)
 
 
 @consulta.get(path="/consultaPaciente/")
