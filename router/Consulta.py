@@ -3,8 +3,19 @@ import sys
 sys.path.append("..")
 from fastapi import APIRouter, HTTPException
 from utils.dbAlchemy import session
-from models.models import ConsultaModel, PacienteModel, MedicoModel, UsuarioModel
-from schema.Consulta import ConsultaSchema, ConsultaBase
+from models.models import (
+    ConsultaModel,
+    PacienteModel,
+    MedicoModel,
+    Tratamiento,
+    UsuarioModel,
+)
+from schema.Consulta import (
+    ConsultaSchema,
+    ConsultaBase,
+    TratamientoBase,
+    TratamientoSchema,
+)
 from typing import List
 import datetime
 
@@ -17,6 +28,15 @@ async def get_consultas():
     for consulta in consultas:
         print(consulta)
     return consultas
+
+
+@consulta.pos("/tratamiento", response_model=TratamientoBase)
+async def create_tratamiento(tratamiento: TratamientoBase):
+    db_tratamiento = Tratamiento(**tratamiento.dict())
+    session.add(db_tratamiento)
+    session.commit()
+    session.refresh(db_tratamiento)
+    return db_tratamiento
 
 
 @consulta.post(path="/registrarConsulta/", response_model=ConsultaSchema)
@@ -35,23 +55,39 @@ async def registrar_consulta(consulta: ConsultaBase):
 
 @consulta.get(path="/consultaPaciente/")
 async def historial_paciente(id: int):
-    consultas = session.query(ConsultaModel).filter(ConsultaModel.paciente_id == id).all()
-    paciente = session.query(PacienteModel).filter(PacienteModel.id == consultas[0].paciente_id).first()
-    medico = session.query(MedicoModel).filter(MedicoModel.id == consultas[0].medico_id).first()
-    usuarioMedico = session.query(UsuarioModel).filter(UsuarioModel.id == medico.usuario_id).first()
-    usuarioPaciente = session.query(UsuarioModel).filter(UsuarioModel.id == paciente.usuario_id).first()
+    consultas = (
+        session.query(ConsultaModel).filter(ConsultaModel.paciente_id == id).all()
+    )
+    paciente = (
+        session.query(PacienteModel)
+        .filter(PacienteModel.id == consultas[0].paciente_id)
+        .first()
+    )
+    medico = (
+        session.query(MedicoModel)
+        .filter(MedicoModel.id == consultas[0].medico_id)
+        .first()
+    )
+    usuarioMedico = (
+        session.query(UsuarioModel).filter(UsuarioModel.id == medico.usuario_id).first()
+    )
+    usuarioPaciente = (
+        session.query(UsuarioModel)
+        .filter(UsuarioModel.id == paciente.usuario_id)
+        .first()
+    )
 
     resultado_json = []
     for item in consultas:
         consulta_dict = {
-            'medico': usuarioMedico.nombre,
-            'tarjetaProfesional': medico.tarjeta_profesional,
-            'especialidad': medico.especialidad,
-            'paciente': usuarioPaciente.nombre,
-            'cedula': usuarioPaciente.cedula,
-            'nombre_diagnostico': item.nombre_diagnostico,
-            'descripcion': item.descripcion,
-            'fecha': item.fecha
+            "medico": usuarioMedico.nombre,
+            "tarjetaProfesional": medico.tarjeta_profesional,
+            "especialidad": medico.especialidad,
+            "paciente": usuarioPaciente.nombre,
+            "cedula": usuarioPaciente.cedula,
+            "nombre_diagnostico": item.nombre_diagnostico,
+            "descripcion": item.descripcion,
+            "fecha": item.fecha,
         }
 
         resultado_json.append(consulta_dict)

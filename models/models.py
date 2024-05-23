@@ -1,4 +1,13 @@
-from sqlalchemy import Table, Column, Integer, String, DateTime, ForeignKey, Float, Boolean
+from sqlalchemy import (
+    Table,
+    Column,
+    Integer,
+    String,
+    DateTime,
+    ForeignKey,
+    Float,
+    Boolean,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -87,6 +96,7 @@ class ConsultaModel(Base):
     id = Column(Integer, primary_key=True)
     paciente_id = Column(Integer, ForeignKey("paciente.id"))
     medico_id = Column(Integer, ForeignKey("medico.id"))
+    tratamiento_id = Column(Integer, ForeignKey("tratamiento.id"))
     nombre_diagnostico = Column(String)
     descripcion = Column(String)
     fecha = Column(DateTime)
@@ -96,6 +106,15 @@ class ConsultaModel(Base):
     # Recibo de foraneo de otras tablas
     medico = relationship("MedicoModel", back_populates="consulta")
     paciente = relationship("PacienteModel", back_populates="consulta")
+    tratamiento = relationship("TratamientoModel", back_populates="consulta")
+
+
+class TratamientoModel(Base):
+    __tablename__ = "tratamiento"
+    id = Column(Integer, primary_key=True)
+    nombre_tratamiento = Column(String)
+    descripcion = Column(String)
+    fecha = Column(DateTime)
 
 
 class notificacionesModel:
