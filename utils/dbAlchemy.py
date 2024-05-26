@@ -7,7 +7,9 @@ import os
 username = os.getenv("root")
 password = os.getenv("123456789")
 database = os.getenv("hpv_safe")
-DB_URL = "mysql://root:123456789@127.0.0.1/hpv_safe"
+DB_URL = f"mysql+pymysql://TestABC:TestABC@127.0.0.1/MySql80"
+
+print(DB_URL)
 
 # Intentar conectar a la base de datos
 try:

@@ -97,7 +97,7 @@ class ConsultaModel(Base):
     id = Column(Integer, primary_key=True)
     paciente_id = Column(Integer, ForeignKey("paciente.id"))
     medico_id = Column(Integer, ForeignKey("medico.id"))
-    tratamienti_id = Column(Integer, ForeignKey("tratamiento.id"))
+    tratamiento_id = Column(Integer, ForeignKey("tratamiento.id"))
     nombre_diagnostico = Column(String)
     descripcion = Column(String)
     fecha = Column(DateTime)
