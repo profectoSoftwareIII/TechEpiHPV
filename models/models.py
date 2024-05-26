@@ -97,7 +97,7 @@ class ConsultaModel(Base):
     id = Column(Integer, primary_key=True)
     paciente_id = Column(Integer, ForeignKey("paciente.id"))
     medico_id = Column(Integer, ForeignKey("medico.id"))
-    tratamiento_id = Column(Integer, ForeignKey("tratamiento.id"))
+    tratamienti_id = Column(Integer, ForeignKey("tratamiento.id"))
     nombre_diagnostico = Column(String)
     descripcion = Column(String)
     fecha = Column(DateTime)
@@ -115,7 +115,6 @@ class TratamientoModel(Base):
     id = Column(Integer, primary_key=True)
     nombre = Column(String)
     descripcion = Column(String)
-    fecha = Column(DateTime, default=datetime.datetime.now())
     consulta = relationship("ConsultaModel", back_populates="tratamiento")
 
 
