@@ -7,7 +7,8 @@ import os
 username = os.getenv("DB_USERNAME")
 password = os.getenv("DB_PASSWORD")
 database = os.getenv("DB_NAME")
-DB_URL = f"mysql+pymysql://{username}:{password}@localhost/{database}"
+DB_URL = f"mysql+pymysql://{username}:{password}@127.0.0.1/{database}"
+
 
 # Intentar conectar a la base de datos
 try:

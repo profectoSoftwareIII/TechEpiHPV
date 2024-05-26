@@ -44,7 +44,7 @@ async def registrar_consulta(consulta: ConsultaBase):
     db_consulta = ConsultaModel(**consulta.dict())
     fecha_actual = datetime.datetime.now()
     fecha_consulta = db_consulta.fecha.date()
-    if fecha_actual.date() == fecha_consulta:
+    if fecha_actual.date() <= fecha_consulta:
         if 1 < len(db_consulta.descripcion) <= 200:
             try:
                 session.add(db_consulta)
