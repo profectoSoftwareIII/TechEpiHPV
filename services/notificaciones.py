@@ -3,14 +3,14 @@ import requests
 
 
 def enviarCorreo(datos: notificacionesModel):
-    print('Enviando correo...', datos.asunto, datos.destino, datos.mensaje)
-    response = requests.get('http://127.0.0.1:8000/correo?destino={}&asunto={}&mensaje={}&hash=ABC123'
+    print("enviando correo")
+    response = requests.get('http://127.0.0.1:5000/correo?destino={}&asunto={}&mensaje={}&hash=ABC123'
                             .format(datos.destino, datos.asunto, datos.mensaje))
     print(response)
 
 
 def enviarSMS(datos: notificacionesModel):
-    print('Enviando correo...', datos.asunto, datos.destino, datos.mensaje)
-    response = requests.get('http://127.0.0.1:8000/sms?destino={}&asunto={}&mensaje={}&hash=ABC123'
-                            .format(datos.destino, datos.asunto, datos.mensaje))
+    print("enviando sms")
+    response = requests.get('http://127.0.0.1:5000/sms?destino={}&mensaje={}&hash=ABC123'
+                            .format(datos.destino, datos.mensaje))
     print(response)

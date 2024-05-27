@@ -18,13 +18,3 @@ class ConsultaSchema(ConsultaBase):
         orm_mode = True
 
 
-class TratamientoBase(BaseModel):
-    nombre: str
-    descripcion: str
-
-
-class ConsultaTratamientoSchema(TratamientoBase):
-    id: int
-
-    class Config:
-        orm_mode = True

@@ -4,10 +4,12 @@ from sqlalchemy.orm import sessionmaker
 import os
 
 # Configuración de conexión
-username = os.getenv("DB_USERNAME")
-password = os.getenv("DB_PASSWORD")
-database = os.getenv("DB_NAME")
-DB_URL = f"mysql+pymysql://{username}:{password}@localhost/{database}"
+username = os.getenv("root")
+password = os.getenv("123456789")
+database = os.getenv("hpv_safe")
+DB_URL = f"mysql+pymysql://TestABC:TestABC@127.0.0.1/MySql80"
+
+print(DB_URL)
 
 # Intentar conectar a la base de datos
 try:

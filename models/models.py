@@ -115,7 +115,6 @@ class TratamientoModel(Base):
     id = Column(Integer, primary_key=True)
     nombre = Column(String)
     descripcion = Column(String)
-    fecha = Column(DateTime, default=datetime.datetime.now())
     consulta = relationship("ConsultaModel", back_populates="tratamiento")
 
 
