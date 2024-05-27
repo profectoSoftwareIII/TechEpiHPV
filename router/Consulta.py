@@ -11,6 +11,7 @@ from models.models import (
     TratamientoModel,
     UsuarioModel,
 )
+from sqlalchemy.exc import SQLAlchemyError
 from schema.Consulta import (
     ConsultaSchema,
     ConsultaBase,
@@ -50,14 +51,10 @@ async def registrar_consulta(consulta: ConsultaBase):
                 session.add(db_consulta)
                 session.commit()
                 session.refresh(db_consulta)
-                print("REGISTRADO:", db_consulta)
                 return db_consulta
             except SQLAlchemyError as e:
                 session.rollback()
                 print("Error al registrar la consulta:", e)
-
-
-from sqlalchemy.exc import SQLAlchemyError
 
 
 @consulta.get(path="/consultaPaciente/{id}")
