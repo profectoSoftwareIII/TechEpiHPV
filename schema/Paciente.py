@@ -1,4 +1,6 @@
+from typing import Optional
 from pydantic import BaseModel
+from schema.Usuario import UsuarioBase
 
 
 class PacienteBase(BaseModel):
@@ -11,7 +13,8 @@ class PacienteSchema(PacienteBase):
 
     class Config:
         orm_mode = True
-        
+
+
 class PacienteSchemaNombre(PacienteBase):
     id: int
 
@@ -19,3 +22,6 @@ class PacienteSchemaNombre(PacienteBase):
         orm_mode = True
 
 
+class PacienteCreate(UsuarioBase):
+    tipo_vpv: Optional[str] = None
+    medico_id: Optional[int]
