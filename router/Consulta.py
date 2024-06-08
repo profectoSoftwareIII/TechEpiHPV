@@ -13,7 +13,6 @@ import datetime
 consulta = APIRouter()
 
 
-
 @consulta.get("/tratamientos_all/", response_model=List[TratamientoSchema])
 async def get_tratamientos():
     tratamientos = session.query(TratamientoModel).all()
@@ -45,9 +44,8 @@ async def registrar_consulta(consulta: ConsultaBase):
     fecha_actual = datetime.datetime.now()
     fecha_consulta = db_consulta.fecha.date()
 
-
     if usuario and fecha_actual.date() == fecha_consulta:
-        
+
         if 1 < len(db_consulta.descripcion) <= 200:
 
             try:
@@ -59,8 +57,6 @@ async def registrar_consulta(consulta: ConsultaBase):
             except SQLAlchemyError as e:
                 session.rollback()
                 print("Error al registrar la consulta:", e)
-
-
 
 
 from sqlalchemy.exc import SQLAlchemyError
@@ -93,7 +89,7 @@ async def historial_paciente(id: int):
     except SQLAlchemyError as e:
         print("Error al realizar la consulta a la base de datos:", e)
         return {"error": "Error al realizar la consulta a la base de datos"}
-    
+
 
 @consulta.get(path="/consultaPaciente/{id}")
 async def historial_paciente(id: int):
@@ -104,7 +100,7 @@ async def historial_paciente(id: int):
         if not consultas:
             return {
                 "error": "No se encontraron consultas para el paciente con id "
-                + str(id)
+                         + str(id)
             }
 
         paciente = (
