@@ -13,7 +13,7 @@ Base = declarative_base()
 
 class UsuarioModel(Base):
     __tablename__ = "usuario"
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
     nombre = Column(String)
     apellido = Column(String)
     cedula = Column(String)
@@ -21,7 +21,6 @@ class UsuarioModel(Base):
     telefono = Column(String)
     email = Column(String)
     # foraneo para otras tablas
-    paciente = relationship("PacienteModel", back_populates="usuario")
     medico = relationship("MedicoModel", back_populates="usuario")
     tipo = Column(String(20), nullable=False)
     __mapper_args__ = {
@@ -32,15 +31,12 @@ class UsuarioModel(Base):
 
 class PacienteModel(UsuarioModel):
     __tablename__ = "paciente"
-    id = Column(Integer, ForeignKey("usuario.id"), primary_key=True, autoincrement=True)
+    id = Column(Integer, ForeignKey("usuario.id"), primary_key=True)
     tipo_hpv = Column(String)
     doctor_id = Column(Integer, ForeignKey("medico.id"))
     consulta = relationship("ConsultaModel", back_populates="paciente")
     recordatorio = relationship("RecordatorioModel", back_populates="paciente")
     medico = relationship("MedicoModel", back_populates="paciente")
-    usuario = relationship(
-        "UsuarioModel", back_populates="paciente"
-    )  # Relación con UsuarioModel
     __mapper_args__ = {"polymorphic_identity": "paciente"}
 
 
@@ -54,7 +50,6 @@ class MedicoModel(Base):
     recordatorio = relationship("RecordatorioModel", back_populates="medico")
     consulta = relationship("ConsultaModel", back_populates="medico")
     # Recibo de foraneo de otras tablas
-    paciente = relationship("PacienteModel", back_populates="medico")
     paciente = relationship(
         "PacienteModel",
         back_populates="medico",
@@ -101,9 +96,3 @@ class TratamientoModel(Base):
     nombre = Column(String)
     descripcion = Column(String)
     consulta = relationship("ConsultaModel", back_populates="tratamiento")
-
-
-class notificacionesModel:
-    destino: str
-    asunto: str
-    mensaje: str
