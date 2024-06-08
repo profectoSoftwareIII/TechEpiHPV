@@ -44,7 +44,7 @@ class ErrorModel(BaseModel):
 
 
 @paciente.post("/registrar/", response_model=PacienteInBD)
-def create_paciente(paciente: PacienteCreate):
+def crear_paciente(paciente: PacienteCreate):
     try:
         db_paciente = PacienteModel(**paciente.dict())
         session.add(db_paciente)

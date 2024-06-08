@@ -1,9 +1,9 @@
-from fastapi import FastAPI, APIRouter
-from pydantic import BaseModel
+from fastapi import FastAPI
 from router.Usuario import user
 from router.Consulta import consulta
 from router.Recordatorio import recordatorio
 from router.Paciente import paciente
+from router.Medico import doctor
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -23,6 +23,7 @@ app.include_router(user, prefix="/user")
 app.include_router(consulta, prefix="/consulta", tags=["consultas"])
 app.include_router(recordatorio, prefix="/recordatorio", tags=["Recordatorios"])
 app.include_router(paciente, prefix="/paciente", tags=["pacientes"])
+app.include_router(doctor, prefix="/medico", tags=["medicos"])
 
 
 @app.get("/")
