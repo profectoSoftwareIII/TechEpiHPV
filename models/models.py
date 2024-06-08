@@ -17,7 +17,7 @@ class UsuarioModel(Base):
     nombre = Column(String)
     apellido = Column(String)
     cedula = Column(String)
-    edad = Column(String)
+    edad = Column(Integer)
     telefono = Column(String)
     email = Column(String)
     # foraneo para otras tablas
@@ -81,10 +81,7 @@ class ConsultaModel(Base):
     nombre_diagnostico = Column(String)
     descripcion = Column(String)
     fecha = Column(DateTime)
-
-    # foraneo para otras tablas
-
-    # Recibo de foraneo de otras tablas
+    # Relaciones
     medico = relationship("MedicoModel", back_populates="consulta")
     paciente = relationship("PacienteModel", back_populates="consulta")
     tratamiento = relationship("TratamientoModel", back_populates="consulta")
@@ -95,4 +92,5 @@ class TratamientoModel(Base):
     id = Column(Integer, primary_key=True)
     nombre = Column(String)
     descripcion = Column(String)
+    # Relaciones
     consulta = relationship("ConsultaModel", back_populates="tratamiento")

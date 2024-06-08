@@ -28,8 +28,6 @@ async def get_tratamientos():
 @consulta.get("/getConsultas/", response_model=List[ConsultaSchema])
 async def get_consultas():
     consultas = session.query(ConsultaModel).all()
-    for consulta in consultas:
-        print(consulta)
     return consultas
 
 
@@ -117,7 +115,6 @@ async def historial_paciente(id: int):
             resultado_json.append(consulta_dict)
         return resultado_json
     except SQLAlchemyError as e:
-        print("Error al realizar la consulta a la base de datos:", e)
         return {"error": "Error al realizar la consulta a la base de datos"}
 
 
