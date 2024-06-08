@@ -16,5 +16,3 @@ class ConsultaSchema(ConsultaBase):
 
     class Config:
         orm_mode = True
-
-

@@ -1,13 +1,9 @@
-import datetime
 from sqlalchemy import (
-    Table,
     Column,
     Integer,
     String,
     DateTime,
     ForeignKey,
-    Float,
-    Boolean,
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -17,30 +13,35 @@ Base = declarative_base()
 
 class UsuarioModel(Base):
     __tablename__ = "usuario"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String)
     apellido = Column(String)
     cedula = Column(String)
     edad = Column(String)
     telefono = Column(String)
     email = Column(String)
-    password = Column(String)
     # foraneo para otras tablas
     paciente = relationship("PacienteModel", back_populates="usuario")
     medico = relationship("MedicoModel", back_populates="usuario")
-    poblacionGeneral = relationship("PoblacionGeneralModel", back_populates="usuario")
+    tipo = Column(String(20), nullable=False)
+    __mapper_args__ = {
+        "polymorphic_identity": "usuario",  # tipo usuario
+        "polymorphic_on": tipo,  # tipo de subclase
+    }
 
-    # Recibo de foraneo de otras tablas
 
-
-class PacienteModel(Base):
+class PacienteModel(UsuarioModel):
     __tablename__ = "paciente"
-    id = Column(Integer, ForeignKey("usuario.id", primary_key=True))
+    id = Column(Integer, ForeignKey("usuario.id"), primary_key=True, autoincrement=True)
     tipo_hpv = Column(String)
     doctor_id = Column(Integer, ForeignKey("medico.id"))
     consulta = relationship("ConsultaModel", back_populates="paciente")
     recordatorio = relationship("RecordatorioModel", back_populates="paciente")
-    doctor = relationship("MedicoModel", back_populates="paciente")
+    medico = relationship("MedicoModel", back_populates="paciente")
+    usuario = relationship(
+        "UsuarioModel", back_populates="paciente"
+    )  # Relación con UsuarioModel
+    __mapper_args__ = {"polymorphic_identity": "paciente"}
 
 
 class MedicoModel(Base):
@@ -53,20 +54,13 @@ class MedicoModel(Base):
     recordatorio = relationship("RecordatorioModel", back_populates="medico")
     consulta = relationship("ConsultaModel", back_populates="medico")
     # Recibo de foraneo de otras tablas
+    paciente = relationship("PacienteModel", back_populates="medico")
+    paciente = relationship(
+        "PacienteModel",
+        back_populates="medico",
+        foreign_keys="[PacienteModel.doctor_id]",
+    )
     usuario = relationship("UsuarioModel", back_populates="medico")
-
-
-class PoblacionGeneralModel(Base):
-    __tablename__ = "poblacionGeneral"
-    id = Column(Integer, primary_key=True)
-    usuario_id = Column(Integer, ForeignKey("usuario.id"))
-    ocupacion = Column(String)
-    ubicacion = Column(String)
-
-    # foraneo para otras tablas
-
-    # Recibo de foraneo de otras tablas
-    usuario = relationship("UsuarioModel", back_populates="poblacionGeneral")
 
 
 class RecordatorioModel(Base):

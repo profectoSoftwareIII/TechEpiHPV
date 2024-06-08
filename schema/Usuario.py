@@ -8,7 +8,6 @@ class UsuarioBase(BaseModel):
     edad: int
     telefono: str
     email: str
-    password: str
 
 
 class UsuarioSchema(UsuarioBase):

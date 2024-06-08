@@ -1,6 +1,7 @@
 import sys
 
 sys.path.append("..")
+from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import APIRouter
 from utils.dbAlchemy import session
@@ -11,7 +12,14 @@ from models.models import (
     TratamientoModel,
     UsuarioModel,
 )
-from schema.Paciente import PacienteSchema, PacienteBase, PacienteSchemaNombre
+from schema.Paciente import (
+    Paciente,
+    PacienteCreate,
+    PacienteInBD,
+    PacienteSchema,
+    PacienteBase,
+    PacienteSchemaNombre,
+)
 
 
 from typing import List
@@ -26,15 +34,23 @@ async def get_pacientes():
     return pacientes
 
 
-# generate endpoint create paciente
-@paciente.post(path="/registrarPaciente/", response_model=PacienteSchema)
-async def resgistrar_paciente(paciente: PacienteBase):
+from fastapi import HTTPException
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+
+
+class ErrorModel(BaseModel):
+    error: str
+
+
+@paciente.post("/registrar/", response_model=PacienteInBD)
+def create_paciente(paciente: PacienteCreate):
     try:
-        db_paciente = PacienteModel(**paciente.model_dump())
+        db_paciente = PacienteModel(**paciente.dict())
         session.add(db_paciente)
         session.commit()
         session.refresh(db_paciente)
         return db_paciente
     except SQLAlchemyError as e:
         session.rollback()
-        return {"error": "Error al realizar la consulta a la base de datos"}
+        raise HTTPException(status_code=400, detail=f"{e}")
