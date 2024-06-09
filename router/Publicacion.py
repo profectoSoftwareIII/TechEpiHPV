@@ -23,10 +23,11 @@ async def crear_publicacion(publicacion: PublicacionBase):
     db_publicacion = PublicacionModel(**publicacion.dict())
     medico = session.query(MedicoModel).filter(MedicoModel.id == db_publicacion.medico_id).first()
     usuario = session.query(UsuarioModel).filter(UsuarioModel.id == medico.usuario_id).first()
+    fecha_actual = datetime.datetime.now()
+    fecha_publicacion = db_publicacion.fecha_publicacion.date()
 
-    if medico and db_publicacion.imagen != "" and 0 < len(db_publicacion.contenido) < 100:
+    if medico and db_publicacion.imagen != "" and 0 < len(db_publicacion.contenido) < 100 and fecha_actual.date() == fecha_publicacion:
         try:
-
             resultado_json = []
             consulta_dict = {
                 "contenido": db_publicacion.contenido,
@@ -42,7 +43,7 @@ async def crear_publicacion(publicacion: PublicacionBase):
             session.commit()
             session.refresh(db_publicacion)
 
-            return db_publicacion
+            return resultado_json
         except SQLAlchemyError as e:
             session.rollback()
             print("Error al registrar la consulta:", e)
