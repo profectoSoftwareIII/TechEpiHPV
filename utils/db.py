@@ -9,7 +9,7 @@ def DataBaseConnection():
             host="127.0.0.1",
             database="hpv_safe",
             user="root",
-            password="123456789")
+            password="1234")
 
         return conn
     except psycopg2.OperationalError as err:
