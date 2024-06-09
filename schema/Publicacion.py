@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class PublicacionBase(BaseModel):
@@ -6,7 +7,7 @@ class PublicacionBase(BaseModel):
     titulo: str
     contenido: str
     imagen: str
-    nombre: str
+    fecha_publicacion: datetime
 
 
 class PublicacionSchema(PublicacionBase):

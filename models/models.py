@@ -126,7 +126,7 @@ class PublicacionModel(Base):
     titulo = Column(String)
     contenido = Column(String)
     imagen = Column(String)
-    nombre = Column(DateTime)
+    fecha_publicacion = Column(DateTime)
 
     medico = relationship("MedicoModel", back_populates="publicacion")
 
