@@ -49,6 +49,7 @@ class MedicoModel(Base):
     # foraneo para otras tablas
     recordatorio = relationship("RecordatorioModel", back_populates="medico")
     consulta = relationship("ConsultaModel", back_populates="medico")
+
     # Recibo de foraneo de otras tablas
     paciente = relationship(
         "PacienteModel",
@@ -94,3 +95,15 @@ class TratamientoModel(Base):
     descripcion = Column(String)
     # Relaciones
     consulta = relationship("ConsultaModel", back_populates="tratamiento")
+
+
+class PublicacionModel(Base):
+    __tablename__ = "publicacion"
+    id = Column(Integer, primary_key=True)
+    medico_id = Column(Integer, ForeignKey("medico.id"))
+    titulo = Column(String)
+    contenido = Column(String)
+    imagen = Column(String)
+    fecha_publicacion = Column(DateTime)
+
+    medico = relationship("MedicoModel", back_populates="publicacion")
