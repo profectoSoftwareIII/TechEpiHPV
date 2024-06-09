@@ -49,6 +49,7 @@ class MedicoModel(Base):
     # foraneo para otras tablas
     recordatorio = relationship("RecordatorioModel", back_populates="medico")
     consulta = relationship("ConsultaModel", back_populates="medico")
+    publicacion = relationship("PublicacionModel", back_populates="medico")
 
     # Recibo de foraneo de otras tablas
     paciente = relationship(
@@ -107,3 +108,10 @@ class PublicacionModel(Base):
     fecha_publicacion = Column(DateTime)
 
     medico = relationship("MedicoModel", back_populates="publicacion")
+
+
+class notificacionesModel:
+    destino: str
+    asunto: str
+    mensaje: str
+

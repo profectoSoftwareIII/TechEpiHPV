@@ -57,11 +57,7 @@ async def registrar_consulta(consulta: ConsultaBase):
     fecha_consulta = db_consulta.fecha.date()
 
     if usuario and fecha_actual.date() == fecha_consulta:
-<<<<<<< HEAD
-=======
 
-        if 1 < len(db_consulta.descripcion) <= 200:
->>>>>>> origin/modulo_prevencion
 
         if 1 < len(db_consulta.descripcion) <= 200:
             try:
