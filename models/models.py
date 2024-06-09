@@ -1,13 +1,9 @@
-import datetime
 from sqlalchemy import (
-    Table,
     Column,
     Integer,
     String,
     DateTime,
     ForeignKey,
-    Float,
-    Boolean,
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -21,31 +17,27 @@ class UsuarioModel(Base):
     nombre = Column(String)
     apellido = Column(String)
     cedula = Column(String)
-    edad = Column(String)
+    edad = Column(Integer)
     telefono = Column(String)
     email = Column(String)
-    password = Column(String)
-
     # foraneo para otras tablas
-    paciente = relationship("PacienteModel", back_populates="usuario")
     medico = relationship("MedicoModel", back_populates="usuario")
-    poblacionGeneral = relationship("PoblacionGeneralModel", back_populates="usuario")
+    tipo = Column(String(20), nullable=False)
+    __mapper_args__ = {
+        "polymorphic_identity": "usuario",  # tipo usuario
+        "polymorphic_on": tipo,  # tipo de subclase
+    }
 
-    # Recibo de foraneo de otras tablas
 
-
-class PacienteModel(Base):
+class PacienteModel(UsuarioModel):
     __tablename__ = "paciente"
-    id = Column(Integer, primary_key=True)
-    usuario_id = Column(Integer, ForeignKey("usuario.id"))
+    id = Column(Integer, ForeignKey("usuario.id"), primary_key=True)
     tipo_hpv = Column(String)
-
-    # foraneo para otras tablas
-    recordatorio = relationship("RecordatorioModel", back_populates="paciente")
+    doctor_id = Column(Integer, ForeignKey("medico.id"))
     consulta = relationship("ConsultaModel", back_populates="paciente")
-
-    # Recibo de foraneo de otras tablas
-    usuario = relationship("UsuarioModel", back_populates="paciente")
+    recordatorio = relationship("RecordatorioModel", back_populates="paciente")
+    medico = relationship("MedicoModel", back_populates="paciente")
+    __mapper_args__ = {"polymorphic_identity": "paciente"}
 
 
 class MedicoModel(Base):
@@ -54,27 +46,18 @@ class MedicoModel(Base):
     usuario_id = Column(Integer, ForeignKey("usuario.id"))
     tarjeta_profesional = Column(String)
     especialidad = Column(String)
-
     # foraneo para otras tablas
     recordatorio = relationship("RecordatorioModel", back_populates="medico")
     consulta = relationship("ConsultaModel", back_populates="medico")
     publicacion = relationship("PublicacionModel", back_populates="medico")
 
     # Recibo de foraneo de otras tablas
+    paciente = relationship(
+        "PacienteModel",
+        back_populates="medico",
+        foreign_keys="[PacienteModel.doctor_id]",
+    )
     usuario = relationship("UsuarioModel", back_populates="medico")
-
-
-class PoblacionGeneralModel(Base):
-    __tablename__ = "poblacionGeneral"
-    id = Column(Integer, primary_key=True)
-    usuario_id = Column(Integer, ForeignKey("usuario.id"))
-    ocupacion = Column(String)
-    ubicacion = Column(String)
-
-    # foraneo para otras tablas
-
-    # Recibo de foraneo de otras tablas
-    usuario = relationship("UsuarioModel", back_populates="poblacionGeneral")
 
 
 class RecordatorioModel(Base):
@@ -85,9 +68,7 @@ class RecordatorioModel(Base):
     tipo_recordatorio = Column(String)
     descripcion = Column(String)
     fecha = Column(DateTime)
-
     # foraneo para otras tablas
-
     # Recibo de foraneo de otras tablas
     medico = relationship("MedicoModel", back_populates="recordatorio")
     paciente = relationship("PacienteModel", back_populates="recordatorio")
@@ -102,10 +83,7 @@ class ConsultaModel(Base):
     nombre_diagnostico = Column(String)
     descripcion = Column(String)
     fecha = Column(DateTime)
-
-    # foraneo para otras tablas
-
-    # Recibo de foraneo de otras tablas
+    # Relaciones
     medico = relationship("MedicoModel", back_populates="consulta")
     paciente = relationship("PacienteModel", back_populates="consulta")
     tratamiento = relationship("TratamientoModel", back_populates="consulta")
@@ -116,6 +94,7 @@ class TratamientoModel(Base):
     id = Column(Integer, primary_key=True)
     nombre = Column(String)
     descripcion = Column(String)
+    # Relaciones
     consulta = relationship("ConsultaModel", back_populates="tratamiento")
 
 
@@ -135,3 +114,4 @@ class notificacionesModel:
     destino: str
     asunto: str
     mensaje: str
+
