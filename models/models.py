@@ -31,7 +31,8 @@ class UsuarioModel(Base):
 
 class PacienteModel(UsuarioModel):
     __tablename__ = "paciente"
-    id = Column(Integer, ForeignKey("usuario.id"), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    usuario_id = Column(Integer, ForeignKey("usuario.id"))
     tipo_hpv = Column(String)
     doctor_id = Column(Integer, ForeignKey("medico.id"))
     consulta = relationship("ConsultaModel", back_populates="paciente")
