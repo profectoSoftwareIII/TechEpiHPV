@@ -5,11 +5,11 @@ from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
 from fastapi import APIRouter
 from typing import List
-from utils.dbAlchemy import session
-from models.models import (
+from TechEpiHPV.utils.dbAlchemy import session
+from TechEpiHPV.models.models import (
     PacienteModel,
 )
-from schema.Paciente import (
+from TechEpiHPV.schema.Paciente import (
     PacienteCreate,
     PacienteInBD,
     PacienteSchema,

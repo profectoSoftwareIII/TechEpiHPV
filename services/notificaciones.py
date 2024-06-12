@@ -1,4 +1,4 @@
-from models.models import RecordatorioModel
+from TechEpiHPV.models.models import RecordatorioModel
 import requests
 
 

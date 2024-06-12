@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 import pytest
 from httpx import AsyncClient
-from main import app
+from TechEpiHPV.main import app
 from datetime import datetime, timedelta
 
 

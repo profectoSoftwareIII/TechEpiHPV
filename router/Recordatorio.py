@@ -2,16 +2,16 @@ import sys
 
 sys.path.append("..")
 from fastapi import APIRouter
-from utils.dbAlchemy import session
-from models.models import (
+from TechEpiHPV.utils.dbAlchemy import session
+from TechEpiHPV.models.models import (
     RecordatorioModel,
     PacienteModel,
     RecordatorioModel,
     UsuarioModel,
     ConsultaModel,
 )
-from schema.Recordatorio import RecordatorioSchema, RecordatorioBase
-from services import notificaciones
+from TechEpiHPV.schema.Recordatorio import RecordatorioSchema, RecordatorioBase
+from TechEpiHPV.services import notificaciones
 from typing import List
 from sqlalchemy.exc import SQLAlchemyError
 

@@ -3,7 +3,6 @@ from datetime import datetime
 
 
 class PublicacionBase(BaseModel):
-    medico_id: int
     titulo: str
     contenido: str
     imagen: str

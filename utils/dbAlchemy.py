@@ -9,7 +9,7 @@ load_dotenv()
 
 # Configuración de conexión
 
-print(username, password == "NH2YBNCg0VA1aY6I", database)
+#print(username, password == "NH2YBNCg0VA1aY6I", database)
 
 username = os.getenv("root")
 password = os.getenv("1234")
@@ -22,7 +22,7 @@ DB_URL = "mysql://root:1234@127.0.0.1/hpv_safe"
 # DB_URL = f"mysql+pymysql://{username}:{password}@localhost:3306/{database}"
 # Intentar conectar a la base de datos
 try:
-    DB_URL = f"mysql+pymysql://soft_admin:{password}@127.0.0.1/hpv_safe"
+    DB_URL = f"mysql+pymysql://root:1234@127.0.0.1/hpv_safe"
     engine = create_engine(DB_URL)
     engine = create_engine("mysql+pymysql://root:1234@127.0.0.1/hpv_safe")
 
