@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 @pytest.mark.asyncio
 async def test_crear_consulta_valida():
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url="https://test") as ac:
         response = await ac.post(
             "/registrarConsulta/",
             json={
@@ -32,7 +32,7 @@ async def test_crear_consulta_valida():
 
 @pytest.mark.asyncio
 async def test_crear_consulta_id_negativo():
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url="https://test") as ac:
         response = await ac.post(
             "/registrarConsulta/",
             json={
@@ -53,7 +53,7 @@ async def test_crear_consulta_id_negativo():
 
 @pytest.mark.asyncio
 async def test_crear_consulta_fecha_pasada():
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url="https://test") as ac:
         response = await ac.post(
             "/registrarConsulta/",
             json={
