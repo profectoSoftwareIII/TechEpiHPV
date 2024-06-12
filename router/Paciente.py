@@ -8,6 +8,7 @@ from typing import List
 from TechEpiHPV.utils.dbAlchemy import session
 from TechEpiHPV.models.models import (
     PacienteModel,
+    UsuarioModel,
 )
 from TechEpiHPV.schema.Paciente import (
     PacienteCreate,
@@ -18,9 +19,9 @@ from TechEpiHPV.schema.Paciente import (
 paciente = APIRouter()
 
 
-@paciente.get("/pacientes_all/", response_model=List[PacienteSchema])
+@paciente.get("/pacientes_all/")
 async def get_pacientes():
-    pacientes = session.query(PacienteModel).all()
+    pacientes = session.query(UsuarioModel).filter_by(tipo="paciente").all()
     return pacientes
 
 

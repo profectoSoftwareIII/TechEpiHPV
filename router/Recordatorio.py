@@ -33,18 +33,13 @@ async def get_consultas():
 
 @recordatorio.post(path="/registrarRecordatorio/", response_model=RecordatorioSchema)
 async def resgistrar_recordatorio(recordatorio: RecordatorioBase):
-    db_consulta = RecordatorioModel(**recordatorio.dict())
+    db_consulta = RecordatorioModel(**recordatorio.model_dump())
     session.add(db_consulta)
     session.commit()
     session.refresh(db_consulta)
     paciente = (
         session.query(PacienteModel)
         .filter(PacienteModel.id == db_consulta.paciente_id)
-        .first()
-    )
-    usuario = (
-        session.query(UsuarioModel)
-        .filter(UsuarioModel.id == paciente.usuario_id)
         .first()
     )
     consulta = (
@@ -54,13 +49,13 @@ async def resgistrar_recordatorio(recordatorio: RecordatorioBase):
     )
     try:
         if db_consulta.tipo_recordatorio == "email":
-            RecordatorioModel.destino = usuario.email
-            RecordatorioModel.asunto = "RECORDATORIO DINAMICO"
+            RecordatorioModel.destino = paciente.email
+            RecordatorioModel.asunto = "Recordatorio Importante: Prevención del Virus del Papiloma Humano (VPH)"
             RecordatorioModel.mensaje = consulta.descripcion
             notificaciones.enviarCorreo(RecordatorioModel)
 
         elif db_consulta.tipo_recordatorio == "telefono":
-            RecordatorioModel.destino = usuario.telefono
+            RecordatorioModel.destino = paciente.telefono
             RecordatorioModel.mensaje = consulta.descripcion
             notificaciones.enviarSMS(RecordatorioModel)
         return db_consulta

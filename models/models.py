@@ -51,7 +51,11 @@ class MedicoModel(Base):
     consulta = relationship("ConsultaModel", back_populates="medico")
 
     # Recibo de foraneo de otras tablas
-    paciente = relationship("PacienteModel",back_populates="medico",foreign_keys="[PacienteModel.doctor_id]",)
+    paciente = relationship(
+        "PacienteModel",
+        back_populates="medico",
+        foreign_keys="[PacienteModel.doctor_id]",
+    )
     usuario = relationship("UsuarioModel", back_populates="medico")
 
 
@@ -95,6 +99,7 @@ class TratamientoModel(Base):
 
 class PublicacionModel(Base):
     __tablename__ = "publicacion"
+    id = Column(Integer, primary_key=True, autoincrement=True)
     id = Column(Integer, primary_key=True)
     titulo = Column(String)
     contenido = Column(String)
@@ -106,4 +111,3 @@ class notificacionesModel:
     destino: str
     asunto: str
     mensaje: str
-
