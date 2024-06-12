@@ -1,5 +1,6 @@
-from TechEpiHPV.models.models import RecordatorioModel
 import requests
+
+from models.models import RecordatorioModel
 
 
 def enviarCorreo(datos: RecordatorioModel):
