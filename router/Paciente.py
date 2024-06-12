@@ -5,15 +5,14 @@ from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
 from fastapi import APIRouter
 from typing import List
-from TechEpiHPV.utils.dbAlchemy import session
-from TechEpiHPV.models.models import (
+from utils.dbAlchemy import session
+from models.models import (
     PacienteModel,
     UsuarioModel,
 )
-from TechEpiHPV.schema.Paciente import (
+from schema.Paciente import (
     PacienteCreate,
     PacienteInBD,
-    PacienteSchema,
 )
 
 paciente = APIRouter()

@@ -2,10 +2,10 @@ import sys
 
 sys.path.append("..")
 from fastapi import APIRouter
-from TechEpiHPV.schema.Usuario import UsuarioSchema
-from TechEpiHPV.utils.dbAlchemy import session
-from TechEpiHPV.models.models import UsuarioModel
-from TechEpiHPV.schema.Usuario import UsuarioSchema
+from schema.Usuario import UsuarioSchema
+from utils.dbAlchemy import session
+from models.models import UsuarioModel
+from schema.Usuario import UsuarioSchema
 from typing import List
 
 user = APIRouter()

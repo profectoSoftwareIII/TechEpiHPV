@@ -1,9 +1,9 @@
 import sys
 from fastapi import APIRouter, HTTPException
-from TechEpiHPV.models.models import MedicoModel
-from TechEpiHPV.schema.Paciente import Paciente, PacienteCreate, PacienteInBD, PacienteSchema
-from TechEpiHPV.utils.dbAlchemy import session
-from TechEpiHPV.schema.Medico import DoctorWithPacientes, MedicoSchema
+from models.models import MedicoModel
+from schema.Paciente import Paciente, PacienteCreate, PacienteInBD, PacienteSchema
+from utils.dbAlchemy import session
+from schema.Medico import DoctorWithPacientes, MedicoSchema
 
 sys.path.append("..")
 

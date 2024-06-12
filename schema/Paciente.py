@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
-from TechEpiHPV.schema.Usuario import UsuarioBase
+from schema.Usuario import UsuarioBase
 
 
 class PacienteBase(BaseModel):
