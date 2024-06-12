@@ -39,7 +39,7 @@ class DoctorWithPacientes(BaseModel):
     edad: str
     telefono: str
     email: str
-    tipo: str
+    especialidad: str
     pacientes: List[PacienteBase]
 
     class Config:

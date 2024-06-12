@@ -7,10 +7,10 @@ from schema.Medico import DoctorWithPacientes, MedicoSchema
 
 sys.path.append("..")
 
-doctor = APIRouter()
+medico = APIRouter()
 
 
-@doctor.get("/all_patiens_by_doctor/{medico_id}")
+@medico.get("/all_patiens_by_doctor/{medico_id}")
 def obtener_pacientes_doctor(medico_id: int):
     query = session.query(MedicoModel).filter(MedicoModel.id == medico_id).first()
     if not query:
@@ -18,7 +18,7 @@ def obtener_pacientes_doctor(medico_id: int):
     return {"medico": query, "pacientes": query.paciente}
 
 
-@doctor.get("/pacientes_by_doctor/{medico_id}", response_model=DoctorWithPacientes)
+@medico.get("/pacientes_by_doctor/{medico_id}", response_model=DoctorWithPacientes)
 def obtener_pacientes_doctor(medico_id: int):
     query = session.query(MedicoModel).filter(MedicoModel.id == medico_id).first()
     if not query:
@@ -32,7 +32,7 @@ def obtener_pacientes_doctor(medico_id: int):
         "edad": query.usuario.edad,
         "telefono": query.usuario.telefono,
         "email": query.usuario.email,
-        "tipo": query.usuario.tipo,
+        "especialidad": query.especialidad,
         "pacientes": [
             {
                 "id": paciente.id,

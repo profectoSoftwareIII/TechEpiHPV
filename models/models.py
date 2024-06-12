@@ -99,11 +99,8 @@ class TratamientoModel(Base):
 
 class PublicacionModel(Base):
     __tablename__ = "publicacion"
-    id = Column(Integer, primary_key=True)
-    medico_id = Column(Integer, ForeignKey("medico.id"))
+    id = Column(Integer, primary_key=True, autoincrement=True)
     titulo = Column(String)
     contenido = Column(String)
     imagen = Column(String)
     fecha_publicacion = Column(DateTime)
-
-    medico = relationship("MedicoModel", back_populates="publicacion")
