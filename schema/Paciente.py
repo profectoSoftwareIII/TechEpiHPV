@@ -34,6 +34,7 @@ class UsuarioBase(BaseModel):
 class PacienteCreate(UsuarioBase):
     tipo_hpv: Optional[str] = None
     doctor_id: Optional[int] = None
+    genero: str
 
 
 class PacienteInBD(PacienteCreate):

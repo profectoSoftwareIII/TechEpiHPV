@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 
 
@@ -7,7 +7,10 @@ class RecordatorioBase(BaseModel):
     paciente_id: int
     tipo_recordatorio: str
     descripcion: str
-    fecha: datetime
+    fecha: datetime = Field(default_factory=datetime.utcnow)
+
+    class Config:
+        orm_mode = True
 
 
 class RecordatorioSchema(RecordatorioBase):

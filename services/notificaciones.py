@@ -1,23 +1,21 @@
 import requests
 
-from models.models import RecordatorioModel
+from models.models import notificacionesModel
 
 
-def enviarCorreo(datos: RecordatorioModel):
-    print("enviando correo")
+async def enviarCorreo(destino, asunto, mensaje):
     response = requests.get(
         "http://127.0.0.1:5000/correo?destino={}&asunto={}&mensaje={}&hash=ABC123".format(
-            datos.destino, datos.asunto, datos.mensaje
+            destino, asunto, mensaje
         )
     )
     print(response)
 
 
-def enviarSMS(datos: RecordatorioModel):
-    print("enviando sms")
+async def enviarSMS(destino, mensaje):
     response = requests.get(
         "http://127.0.0.1:5000/sms?destino={}&mensaje={}&hash=ABC123".format(
-            datos.destino, datos.mensaje
+            destino, mensaje
         )
     )
     print(response)

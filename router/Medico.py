@@ -1,9 +1,8 @@
 import sys
 from fastapi import APIRouter, HTTPException
 from models.models import MedicoModel
-from schema.Paciente import Paciente, PacienteCreate, PacienteInBD, PacienteSchema
 from utils.dbAlchemy import session
-from schema.Medico import DoctorWithPacientes, MedicoSchema
+from schema.Medico import DoctorWithPacientes
 
 sys.path.append("..")
 
@@ -20,6 +19,16 @@ def obtener_pacientes_doctor(medico_id: int):
 
 @medico.get("/pacientes_by_doctor/{medico_id}", response_model=DoctorWithPacientes)
 def obtener_pacientes_doctor(medico_id: int):
+    """_summary_: Get all patients by doctor
+    _description_: Get all patients by doctor
+    _parameters_:
+        - medico_id: int
+    _responses_:
+        200:
+            description: Return a list of patients by doctor
+        404:
+            description: Doctor not found
+    """
     query = session.query(MedicoModel).filter(MedicoModel.id == medico_id).first()
     if not query:
         raise HTTPException(status_code=404, detail="Doctor not found")

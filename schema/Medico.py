@@ -21,6 +21,7 @@ class PacienteBase(BaseModel):
     apellido: str
     cedula: str
     edad: str
+    genero: str
     telefono: str
     email: str
     tipo: str

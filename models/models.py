@@ -1,3 +1,4 @@
+import string
 from sqlalchemy import (
     Column,
     Integer,
@@ -33,6 +34,7 @@ class PacienteModel(UsuarioModel):
     __tablename__ = "paciente"
     id = Column(Integer, ForeignKey("usuario.id"), primary_key=True)
     tipo_hpv = Column(String)
+    genero = Column(String)
     doctor_id = Column(Integer, ForeignKey("medico.id"))
     consulta = relationship("ConsultaModel", back_populates="paciente")
     recordatorio = relationship("RecordatorioModel", back_populates="paciente")
@@ -99,7 +101,6 @@ class TratamientoModel(Base):
 
 class PublicacionModel(Base):
     __tablename__ = "publicacion"
-    id = Column(Integer, primary_key=True, autoincrement=True)
     id = Column(Integer, primary_key=True)
     titulo = Column(String)
     contenido = Column(String)

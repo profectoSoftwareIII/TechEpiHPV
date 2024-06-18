@@ -91,6 +91,7 @@ def consultar_consultas_paciente(paciente_id: int):
         "nombre": paciente.nombre,
         "apellido": paciente.apellido,
         "cedula": paciente.cedula,
+        "genero": paciente.genero,
         "edad": paciente.edad,
         "telefono": paciente.telefono,
         "email": paciente.email,
