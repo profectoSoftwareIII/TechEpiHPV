@@ -11,9 +11,15 @@ load_dotenv()
 username = os.getenv("DB_USERNAME_L")
 password = os.getenv("DB_PASSWORD")
 database = os.getenv("DB_NAME")
+DB_URL = f"mysql+pymysql://soft_admin:{password}@127.0.0.1/hpv_safe"
+username = os.getenv("root")
+password = os.getenv("1234")
+database = os.getenv("hpv_safe")
+
 try:
-    DB_URL = f"mysql+pymysql://soft_admin:{password}@127.0.0.1/hpv_safe"
+    DB_URL = f"mysql+pymysql://:@/"
     engine = create_engine(DB_URL)
+
     Session = sessionmaker(bind=engine)
     session = Session()
     Base = declarative_base()
